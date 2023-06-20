@@ -1,0 +1,81 @@
+
+
+
+
+
+docker build --build-arg JAR_FILE=build/libs/*.jar -t auto/mpm_backend .
+docker build -t auto/mpm_backend .
+docker run -p 8081:8081 auto/mpm_backend
+
+0==========================================================================================
+
+ command line에 
+
+1. 
+docker login conatiners.ncr.gov-ntruss.com
+
+2. username -> 
+85BFAEE47209ECE3D293
+
+3. password -> 
+74024FE46B716E9F6EB44C326418FA48B30AE9E1
+
+1==========================================================================================
+
+docker build --platform linux/amd64 -t cw_front .
+
+docker build --platform linux/amd64 -t mpm_bo_front .
+
+docker build --platform linux/amd64 -t cw_backend .
+
+docker build --platform linux/amd64 -t mpm_bo_backend .
+
+ -> 도커를 현재 위치에서 linux/amd64 아키텍쳐로 cw_front라는 이름으로 이미지로 빌드합니다.
+
+이미지 빌드를 위해서는 약 5분 가량의 시간이 소요됩니다(프론트 기준).
+
+2==========================================================================================
+//개발은 버전, 스테이징은 STG, 운영은 PROD
+--스테이지
+docker image tag cw_front:latest conatiners.ncr.gov-ntruss.com/cw_front_stg:2.4
+docker image tag cw_backend:latest conatiners.ncr.gov-ntruss.com/cw_backend_stg:1.7
+
+
+docker image tag mpm_bo_front:latest conatiners.ncr.gov-ntruss.com/mpm_bo_front_dev:1.0
+
+--개발
+docker image tag cw_front:latest conatiners.ncr.gov-ntruss.com/cw_front_dev:4.0
+docker image tag cw_backend:latest conatiners.ncr.gov-ntruss.com/cw_backend_dev:1.6
+
+
+
+-> cw_front:latest라는 이미지를 conatiners.ncr.gov-ntruss.com/cw_front:1.0 이름으로 변경한다.
+-> 개발은 버전 명시, 스테이징은 STG라는 태그 추가, 운영은 PROD 태그를 추가합니다.
+
+변경이 잘 되었는지 확인하려면 다시한번 docker images 명령어를 쳐서 확인합니다.
+
+3==========================================================================================
+
+--스테이지
+docker push conatiners.ncr.gov-ntruss.com/cw_front_stg:2.4
+docker push conatiners.ncr.gov-ntruss.com/cw_backend_stg:1.7
+-> conatiners.ncr.gov-ntruss.com/cw_front:1.0 이미지를 푸시한다.
+
+--개발
+docker push conatiners.ncr.gov-ntruss.com/cw_front_dev:4.0
+docker push conatiners.ncr.gov-ntruss.com/cw_backend_dev:1.6
+
+
+docker push conatiners.ncr.gov-ntruss.com/mpm_bo_front_dev:1.0
+
+
+docker run --name 컨테이너명 -p 호스트포트:컨테이너포트 이미지명
+4==========================================================================================
+https://auth.gov-ncloud.com/login
+
+로그인 -> 서브계정으로 로그인
+utowhale -> 접속키
+autocrypt -> 아이디
+ac!no.1!mo -> 비밀번호
+
+이후 메일에 오는 정보를 확인해 입력해주셔야합니다.
